@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: obt_sales
+    description: "Flattened sales table combining fact_sales with all its dimensions into one wide table for analysis."

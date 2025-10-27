@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: fact_sales
+    description: "Fact table at the order-product level including quantity, price, discount, and total amount."
+    columns:
+      - name: saleskey
+        description: "Surrogate key for each order-product combination."
+        tests:
+          - unique
+          - not_null
+      - name: orderid
+        description: "Business order ID."
+        tests:
+          - not_null
+      - name: customerkey
+        description: "FK to dim_customer."
+      - name: employeekey
+        description: "FK to dim_employee."
+      - name: productkey
+        description: "FK to dim_product."
+      - name: orderdatekey
+        description: "Role-playing FK to dim_date for order date."
+      - name: quantity
+        description: "Quantity of product ordered."
+      - name: unitprice
+        description: "Price per unit of the product."
+      - name: discount
+        description: "Discount applied to the product."
+      - name: totalamount
+        description: "Total sales amount for the order line (quantity * unitprice * (1-discount))."
