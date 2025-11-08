@@ -29,8 +29,9 @@ topic_detection AS (
     FROM articles
 )
 
+-- Join to keep ALL original columns
 SELECT 
-    a.*,
+    a.*,  -- This keeps all columns including SOURCE_NAME
     t.TOPIC
 FROM articles a
-LEFT JOIN topic_detection t USING (ARTICLE_ID)
+LEFT JOIN topic_detection t ON a.ARTICLE_ID = t.ARTICLE_ID

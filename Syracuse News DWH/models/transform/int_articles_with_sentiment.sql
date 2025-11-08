@@ -35,11 +35,12 @@ sentiment_analysis AS (
     FROM articles
 )
 
+-- Join to keep ALL original columns
 SELECT 
-    a.*,
+    a.*,  -- This keeps all columns from staging
     s.SENTIMENT_SCORE,
     s.SENTIMENT_CATEGORY,
     s.POSITIVE_WORDS,
     s.NEGATIVE_WORDS
 FROM articles a
-LEFT JOIN sentiment_analysis s USING (ARTICLE_ID)
+LEFT JOIN sentiment_analysis s ON a.ARTICLE_ID = s.ARTICLE_ID
