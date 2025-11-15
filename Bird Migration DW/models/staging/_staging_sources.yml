@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: raw
+    database: BIRD_MIGRATION_DW
+    schema: RAW
+    tables:
+      - name: bird_migration_raw
+        description: Raw bird migration data loaded from CSV files
