@@ -223,10 +223,7 @@ cleaned AS (
         END AS recovery_location_known,
         recovery_time_days,
         observation_counts,
-        TRIM(observation_quality) AS observation_quality,
-
-        
-    
+        TRIM(observation_quality) AS observation_quality
         
     FROM source
     WHERE bird_id IS NOT NULL

@@ -1,7 +1,6 @@
 {{
     config(
-        materialized='incremental',
-        unique_key='migration_key',
+        materialized='table',
         tags=['fact', 'core']
     )
 }}
@@ -59,9 +58,6 @@ WITH migration_facts AS (
         ON {{ dbt_utils.generate_surrogate_key(['stg.weather_condition', 'stg.temperature_c', 'stg.wind_speed_kmph']) }} = weather.weather_key
     LEFT JOIN {{ ref('dim_tracking') }} tag
         ON {{ dbt_utils.generate_surrogate_key(['stg.tag_type', 'stg.tagged_by']) }} = tag.tag_key
-    {% if is_incremental() %}
-    WHERE stg.loaded_at > (SELECT MAX(loaded_at) FROM {{ this }})
-    {% endif %}
 )
 
 SELECT * FROM migration_facts
