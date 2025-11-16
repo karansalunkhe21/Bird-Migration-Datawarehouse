@@ -224,6 +224,7 @@ cleaned AS (
         recovery_time_days,
         observation_counts,
         TRIM(observation_quality) AS observation_quality,
+
         
     
         
