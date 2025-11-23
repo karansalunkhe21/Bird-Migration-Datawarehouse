@@ -15,8 +15,8 @@ SELECT DISTINCT
     AVG(average_speed_kmph) AS avg_speed_kmph,
     AVG(max_altitude_m) AS avg_max_altitude_m,
     
-    SUM(CASE WHEN migration_success = 'YES' THEN 1 ELSE 0 END) AS successful_migrations,
-    SUM(CASE WHEN migration_success = 'NO' THEN 1 ELSE 0 END) AS failed_migrations,
+    SUM(CASE WHEN migration_success = 'SUCCESSFUL' THEN 1 ELSE 0 END) AS successful_migrations,
+    SUM(CASE WHEN migration_success = 'FAILED' THEN 1 ELSE 0 END) AS failed_migrations,
     
     AVG(CASE WHEN migrated_in_flock THEN 1.0 ELSE 0.0 END) AS flock_migration_rate,
     AVG(flock_size) AS avg_flock_size,

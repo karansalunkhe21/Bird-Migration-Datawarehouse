@@ -12,7 +12,7 @@ SELECT
     COUNT(*) AS migration_count,
     ROUND(AVG(f.flight_distance_km), 2) AS avg_distance_km,
     ROUND(AVG(f.average_speed_kmph), 2) AS avg_speed_kmph,
-    ROUND(AVG(CASE WHEN f.migration_success = 'YES' THEN 1.0 ELSE 0.0 END) * 100, 2) AS success_rate_percent
+    ROUND(AVG(CASE WHEN f.migration_success = 'SUCCESSFUL' THEN 1.0 ELSE 0.0 END) * 100, 2) AS success_rate_percent
 FROM {{ ref('fact_bird_migration') }} f
 INNER JOIN {{ ref('dim_bird') }} b ON f.bird_key = b.bird_key
 INNER JOIN {{ ref('dim_location') }} origin ON f.origin_location_key = origin.location_key
