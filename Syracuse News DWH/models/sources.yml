@@ -1,9 +1,0 @@
-version: 2
-
-sources:
-  - name: raw
-    database: syracuse_news_dwh
-    schema: raw
-    tables:
-      - name: extracted_articles
-        description: "Raw articles from RSS feeds"
