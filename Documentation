@@ -1,0 +1,180 @@
+# Project Documentation
+
+## Dimensional Modeling
+
+### Source-to-Target Mapping
+
+The data warehouse follows a structured layered architecture:
+```
+RAW → STAGING → INTERMEDIATE → CORE → ANALYTICS
+```
+
+#### 1. Source Layer (Raw Data)
+- **Database:** BIRD_MIGRATION_DW
+- **Schema:** RAW
+- **Table:** `bird_migration_raw`
+- **Purpose:** Unmodified migration records from CSV
+
+#### 2. Staging Layer
+- **Schema:** STAGING
+- **Model:** `stg_bird_migration`
+- **Purpose:** Clean and validate data (coordinate validation, boolean conversion, text normalization)
+
+#### 3. Intermediate Layer
+- **Schema:** INTERMEDIATE
+- **Models:** `int_bird_species`, `int_locations`, `int_tracking_devices`
+- **Purpose:** Aggregate and deduplicate into business entities
+
+#### 4. Core Layer
+- **Schema:** ANALYTICS
+- **Models:** `dim_bird`, `dim_location`, `dim_weather`, `dim_tracking`, `dim_date`, `fact_bird_migration`
+- **Purpose:** Star schema dimensional model
+
+#### 5. Analytics Layer
+- **Schema:** ANALYTICS
+- **Models:** Pre-aggregated analytics tables
+- **Purpose:** Flattened tables for BI dashboards
+
+---
+
+
+## ETL/ELT Pipeline
+
+### Data Flow
+```
+1. EXTRACT → Kaggle CSV download
+2. LOAD → Upload to Snowflake RAW schema
+3. TRANSFORM → dbt models create dimensions and facts
+```
+
+### Transformations
+
+**Staging:**
+- Text normalization (UPPER, TRIM)
+- Month name → number conversion
+- Coordinate validation
+- Boolean standardization
+- Derived fields (altitude_range, migration_duration)
+
+**Intermediate:**
+- Species aggregation
+- Location deduplication
+- Tracking device statistics
+
+**Core:**
+- Dimension builds with surrogate keys
+- Fact table with foreign keys
+- Relationship enforcement
+
+**Analytics:**
+- Pre-aggregated summaries
+- Statistical filtering (minimum sample sizes)
+- Business-ready tables
+
+---
+
+## Data Quality
+
+### Validation Rules
+- Mandatory keys: `bird_id` and `species` required
+- Coordinates: Valid geographic ranges enforced
+- Numeric values: Zero → NULL conversion
+- Text: Case and whitespace normalized
+- Booleans: Consistent TRUE/FALSE
+
+### Data Standards
+- Duplicates removed via DISTINCT
+- Surrogate keys from stable attributes
+- Statistical filtering (HAVING COUNT(*) >= 3)
+
+---
+
+## Business Intelligence
+
+### Analytics Goals
+
+**Primary Objective:** Understand migration patterns, evaluate species performance, identify environmental impacts
+
+**Analytics Types:**
+- **Descriptive** - What happened (volumes, distributions, patterns)
+- **Diagnostic** - Why it happened (weather impact, species efficiency)
+
+---
+
+## Dashboards
+
+### 1. Overview Dashboard
+**Purpose:** Executive summary
+
+**KPIs:**
+- Total Migrations
+- Success Rate %
+- Total Distance
+- Total Species
+
+**Visuals:**
+- Migration trends by month
+- Success vs failure distribution
+- Top species counts
+- Global migration map
+
+---
+
+### 2. Species Deep Dive
+**Purpose:** Detailed species analysis
+
+**KPIs:**
+- Average Distance
+- Flock Migration %
+- Maximum Altitude
+- Success Rate
+
+**Visuals:**
+- Success rate by month
+- Species comparison rankings
+- Distance vs speed scatter
+- Statistics table
+
+---
+
+### 3. Weather & Environmental Impact
+**Purpose:** Environmental factor analysis
+
+**KPIs:**
+- Success by Weather
+- Temperature Impact
+- Climate Zone Distribution
+
+**Visuals:**
+- Weather condition comparison
+- Temperature vs success rate
+- Seasonal distribution
+- Route performance
+
+---
+
+## Semantic Metadata
+
+**Weather Conditions:** Clear, Foggy, Rainy, Stormy, Windy
+
+**Temperature Categories:** Freezing, Cold, Mild, Warm, Hot
+
+**Tracking Quality:** Excellent, Good, Fair, Poor
+
+**Seasons:** Winter, Spring, Summer, Fall
+
+**Climate Zones:** Arctic, North Temperate, Tropical, South Temperate, Antarctic
+
+**Migration Seasons:** Spring Migration (Mar-May), Fall Migration (Aug-Oct)
+
+---
+
+## Implementation Summary
+
+✅ Modern ELT pattern with dbt
+✅ Star schema dimensional model
+✅ Conformed dimensions for enterprise bus
+✅ Data quality framework (40+ tests)
+✅ OBT analytics marts for BI performance
+✅ Interactive dashboards with cross-filtering
+✅ Automated pipeline with version control
