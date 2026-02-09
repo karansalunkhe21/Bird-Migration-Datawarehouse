@@ -110,11 +110,12 @@ bird-migration-dw/
 
 ### Star Schema Design
 
-![Star Schema](Images/Star_Schema.png)
+![Star Schema](Images/Star_Schema/star_schema.jpeg)
 
 Our dimensional model follows the star schema pattern:
 - **Fact Table:** fact_bird_migration (migration events)
 - **Dimensions:** dim_bird, dim_location, dim_date, dim_weather, dim_tracking
+  
 ### Data Flow
 ```
 CSV Files → Python Upload → Snowflake RAW → dbt Staging → 
